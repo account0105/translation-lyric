@@ -25,13 +25,13 @@ const TranslatedText = async ({ ...props }: TranslatedTextProps) => {
     // 各行を翻訳して、原文と翻訳文のペアを作成
     for (const line of lines) {
         if (line.trim()) {
-            // const result = await translator.translateText(
-            //     line,
-            //     originalLanguage,
-            //     translatedLanguage
-            // );
-            // translatedPairs.push({ original: line, translated: result.text });
-            translatedPairs.push({ original: line, translated: "[test translated text]" });
+            const result = await translator.translateText(
+                line,
+                originalLanguage,
+                translatedLanguage
+            );
+            translatedPairs.push({ original: line, translated: result.text });
+            // translatedPairs.push({ original: line, translated: "[test translated text]" });
         }
     }
 

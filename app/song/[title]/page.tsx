@@ -36,7 +36,7 @@ interface PageProps {
     };
 }
 
-export const dynamic = 'force-dynamic'
+export const dynamic = "force-dynamic";
 
 export default async function Page({ searchParams }: PageProps) {
     // const token = process.env.NEXT_PUBLIC_ACCESS_TOKEN;
@@ -78,84 +78,82 @@ export default async function Page({ searchParams }: PageProps) {
     const song = songData.song;
     const OriginalLanguage = song.language;
 
-
-
     // const lyricRes = await fetch(
     //     `http://localhost:3000/api/lyric/${from}`
     // );
     // const lyric = await lyricRes.json();
-
-
 
     // song.mediaが三つ以上で縦並び
     const isThreeOrMoreMedia = song.media.length > 2;
 
     return (
         <div className="w-full">
-            <div className="text-center text-3xl my-10">{song.title}</div>
-            <div className="mb-10">
-                <Card
-                    sx={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        maxWidth: "500px",
-                        margin: "0 auto",
-                    }}
-                    className="dark:bg-slate-800 bg-gray-100 dark:text-white"
-                >
-                    <Box sx={{ display: "flex", flexDirection: "column" }}>
-                        <CardContent sx={{ flex: "1 0 auto" }}>
-                            <Typography component="h5" variant="h5">
-                                {song.artist_names}
-                            </Typography>
-                            <Typography component="p" variant="subtitle1">
-                                release:{song.release_date}
-                            </Typography>
-                        </CardContent>
-                        <Box
-                            sx={{
-                                display: "flex",
-                                alignItems: "center",
-                                pl: 1,
-                                pb: 1,
-                            }}
-                        >
-                            <div
-                                className={
-                                    isThreeOrMoreMedia ? "flex flex-col" : ""
-                                }
+                <div className="text-center text-3xl my-10">{song.title}</div>
+                <div className="mb-10">
+                    <Card
+                        sx={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            maxWidth: "500px",
+                            margin: "0 auto",
+                        }}
+                        className="dark:bg-slate-800 bg-gray-100 dark:text-white"
+                    >
+                        <Box sx={{ display: "flex", flexDirection: "column" }}>
+                            <CardContent sx={{ flex: "1 0 auto" }}>
+                                <Typography component="h5" variant="h5">
+                                    {song.artist_names}
+                                </Typography>
+                                <Typography component="p" variant="subtitle1">
+                                    release:{song.release_date}
+                                </Typography>
+                            </CardContent>
+                            <Box
+                                sx={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    pl: 1,
+                                    pb: 1,
+                                }}
                             >
-                                {song.media.map((media, index) => {
-                                    return (
-                                        <Link
-                                            key={index}
-                                            href={media.url}
-                                            sx={{ margin: "0 0 0 10px" }}
-                                        >
-                                            {media.provider}
-                                        </Link>
-                                    );
-                                })}
-                            </div>
+                                <div
+                                    className={
+                                        isThreeOrMoreMedia
+                                            ? "flex flex-col"
+                                            : ""
+                                    }
+                                >
+                                    {song.media.map((media, index) => {
+                                        return (
+                                            <Link
+                                                key={index}
+                                                href={media.url}
+                                                sx={{ margin: "0 0 0 10px" }}
+                                            >
+                                                {media.provider}
+                                            </Link>
+                                        );
+                                    })}
+                                </div>
+                            </Box>
                         </Box>
-                    </Box>
-                    <CardMedia
-                        component="img"
-                        sx={{ width: 151 }}
-                        image={song.song_art_image_url}
-                        alt={song.title}
-                    />
-                </Card>
-            </div>
-            
-                <div className="flex justify-center">
-                
+                        <CardMedia
+                            component="img"
+                            sx={{ width: 151 }}
+                            image={song.song_art_image_url}
+                            alt={song.title}
+                        />
+                    </Card>
+                </div>
+            <div className="flex justify-center">
+                <React.Suspense fallback={<div>Analyzing language...</div>}>
                     <TranslatedText
                         text={compressedString}
                         originalLanguage={OriginalLanguage}
                         translatedLanguage={searchParams.TranslatedLanguage}
                     />
-                </div>
+                </React.Suspense>
+            </div>
         </div>
     );
 }

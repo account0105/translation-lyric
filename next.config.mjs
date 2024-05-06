@@ -14,6 +14,10 @@ const nextConfig = {
                 protocol: "https",
                 hostname: "images.genius.com",
             },
+            {
+                protocol: "https",
+                hostname: "www.youtube.com",
+            },
         ],
     },
     experimental: {

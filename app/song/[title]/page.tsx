@@ -36,14 +36,16 @@ interface PageProps {
     };
 }
 
+export const dynamic = 'force-dynamic'
+
 export default async function Page({ searchParams }: PageProps) {
-    const token = process.env.NEXT_PUBLIC_ACCESS_TOKEN;
-    const res = await fetch(
-        `https://api.genius.com${searchParams.song_info}?access_token=${token}`
-    );
-    const songInfo: { response: { song: Song } } = await res.json();
-    const song = songInfo.response.song;
-    const OriginalLanguage = song.language;
+    // const token = process.env.NEXT_PUBLIC_ACCESS_TOKEN;
+    // const res = await fetch(
+    //     `https://api.genius.com${searchParams.song_info}?access_token=${token}`
+    // );
+    // const songInfo: { response: { song: Song } } = await res.json();
+    // const song = songInfo.response.song;
+    // const OriginalLanguage = song.language;
 
     const targetUrl = searchParams.from; // スクレイピングしたいURL
     const { data } = await axios.get(targetUrl);
@@ -67,6 +69,23 @@ export default async function Page({ searchParams }: PageProps) {
 
     // 再度 <br> の連続を削除して一つにまとめる
     compressedString = compressedString.replace(/(<br>\s*)+/g, "<br>");
+
+    // 歌情報
+    const url = process.env.NEXT_PUBLIC_PRRODUCT_URL;
+    const { song_info, from, TranslatedLanguage } = searchParams;
+    const songRes = await fetch(`${url}/api/song${song_info}`);
+    const songData = await songRes.json();
+    const song = songData.song;
+    const OriginalLanguage = song.language;
+
+
+
+    // const lyricRes = await fetch(
+    //     `http://localhost:3000/api/lyric/${from}`
+    // );
+    // const lyric = await lyricRes.json();
+
+
 
     // song.mediaが三つ以上で縦並び
     const isThreeOrMoreMedia = song.media.length > 2;
@@ -128,16 +147,15 @@ export default async function Page({ searchParams }: PageProps) {
                     />
                 </Card>
             </div>
-
-            <div className="flex justify-center">
-                {/* <Original text={compressedString} />
-            <TranslatedText text={compressedString} /> */}
-                <TranslatedText
-                    text={compressedString}
-                    originalLanguage={OriginalLanguage}
-                    translatedLanguage={searchParams.TranslatedLanguage}
-                />
-            </div>
+            
+                <div className="flex justify-center">
+                
+                    <TranslatedText
+                        text={compressedString}
+                        originalLanguage={OriginalLanguage}
+                        translatedLanguage={searchParams.TranslatedLanguage}
+                    />
+                </div>
         </div>
     );
 }

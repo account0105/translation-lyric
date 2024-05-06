@@ -63,5 +63,5 @@ export async function GET(
 
 
 
-    return Response.json({ song: });
+    return Response.json({ song: compressedString});
 }
